@@ -1,0 +1,98 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyP1zMlNx2gZULPfovWhLKPk",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/SiddhiAsai/Advanced-Artificial-Intelligence/blob/main/(3)Logic.pynb\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 8,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "-UQ6QWrD2qRA",
+        "outputId": "d006c98f-41c9-421a-ab8a-7e77569b3106"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Inferred Knowledge: {B, C}\n"
+          ]
+        }
+      ],
+      "source": [
+        "from sympy import symbols, Implies\n",
+        "\n",
+        "class LogicLearningSystem:\n",
+        "    def __init__(self):\n",
+        "        self.rules = []\n",
+        "        self.examples = set()\n",
+        "\n",
+        "    def add_rule(self, rule):\n",
+        "        \"\"\"Adds a logical rule to the system.\"\"\"\n",
+        "        self.rules.append(rule)\n",
+        "\n",
+        "    def add_example(self, example):\n",
+        "        \"\"\"Adds an example to the system.\"\"\"\n",
+        "        self.examples.add(example)\n",
+        "\n",
+        "    def infer(self):\n",
+        "        \"\"\"Attempts to infer new knowledge from rules and examples iteratively.\"\"\"\n",
+        "        inferred_knowledge = set(self.examples)\n",
+        "        while True:\n",
+        "            new_inferred = set()\n",
+        "            for rule in self.rules:\n",
+        "                if isinstance(rule, Implies) and rule.args[0] in inferred_knowledge:\n",
+        "                    if rule.args[1] not in inferred_knowledge:\n",
+        "                        new_inferred.add(rule.args[1])\n",
+        "            if not new_inferred:\n",
+        "                break  # Stop when no new facts are inferred\n",
+        "            inferred_knowledge.update(new_inferred)\n",
+        "        inferred_knowledge.discard(A)  # Remove A from output\n",
+        "        return inferred_knowledge\n",
+        "\n",
+        "# Define symbols\n",
+        "A, B, C = symbols('A B C')\n",
+        "\n",
+        "# Initialize the logic learning system\n",
+        "system = LogicLearningSystem()\n",
+        "\n",
+        "# Add rules\n",
+        "system.add_rule(Implies(A, B))  # If A is true, then B is true\n",
+        "system.add_rule(Implies(B, C))  # If B is true, then C is true\n",
+        "\n",
+        "# Add examples\n",
+        "system.add_example(A)  # Given that A is true\n",
+        "\n",
+        "# Infer new knowledge\n",
+        "inferred = system.infer()\n",
+        "print(\"Inferred Knowledge:\", inferred)\n"
+      ]
+    }
+  ]
+}
